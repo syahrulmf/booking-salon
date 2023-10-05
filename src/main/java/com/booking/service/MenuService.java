@@ -30,18 +30,18 @@ public class MenuService {
 
         case 2:
           PrintService.showAllCustomer("List Data Customer", personList);
-          String customerID = ValidationService.validateInput("Silahkan Masukan Customer ID: ", "Input Tidak Dimengerti, Pastikan Customer ID valid!", ValidationService.regexID);
+          String customerID = ValidationService.validateCustomerId("Silahkan Masukan Customer ID: ", "Customer yang dicari tidak tersedia", ValidationService.regexID);
           PrintService.showAllEmployee("List Data Employee", personList);
-          String employeeID = ValidationService.validateInput("Silahkan Masukan Employee ID: ", "Input Tidak Dimengerti, Pastikan Employee ID valid!", ValidationService.regexID);
+          String employeeID = ValidationService.validateEmployeeId("Silahkan Masukan Employee ID: ", "Employee yang dicari tidak tersedia", ValidationService.regexID);
           PrintService.showAllServices("List Data Service", serviceList);
 
           List<Service> services = new ArrayList<>();
           boolean isService = true;
 
           do {
-            String serviceID = ValidationService.validateInput("Silahkan Masukan Service ID: ", "Input Tidak Dimengerti, Pastikan Employee ID valid!", ValidationService.regexID);
+            String serviceID = ValidationService.validateServiceId("Silahkan Masukan Service ID: ", "Service yang dicari tidak tersedia", ValidationService.regexID, services);
             services.add(ReservationService.getServiceByServiceId(serviceID));
-            isService = ValidationService.validateService("Ingin Pilih Service Yang Lain (Y/T)? ");
+            isService = ValidationService.validateService("Ingin Pilih Service Yang Lain (Y/T)? ", services);
           } while (isService);
 
           ReservationService.createReservation(customerID, employeeID, services);
@@ -50,12 +50,13 @@ public class MenuService {
           break;
 
         case 3:
-          PrintService.showRecentReservation("Finis or Cancel Reservation Menu", reservationList);
-          String reservationID = ValidationService.validateInput("Silahkan Maukan Reservation ID: ", "Input tidak dimengerti!", ValidationService.regexID);
+          PrintService.showRecentReservation("Finish or Cancel Reservation Menu", reservationList);
+          String reservationID = ValidationService.validateReservationId("Silahkan Masukan Reservation ID: ", "Reservasi yang dicari tidak tersedia", ValidationService.regexID);
           String reservationType = ValidationService.validateInput("Selesaikan Reservasi (Finish/Cancel): ", "Input tidak dimengerti", "^(?i)(Finish|Cancel)$");
           ReservationService.editReservationWorkstage(reservationID, reservationType);
           isLooping = ValidationService.validateMenu("Press 0 for Back To Main Menu: ");
           break;
+
         case 0:
           isLooping = false;
           break;

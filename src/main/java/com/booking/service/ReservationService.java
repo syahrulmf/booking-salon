@@ -1,6 +1,5 @@
 package com.booking.service;
 
-
 import com.booking.models.*;
 
 import java.util.List;
