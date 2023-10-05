@@ -69,7 +69,7 @@ public class PrintService {
 //     iterates over the list
       for(Person data: listData){
         if (data instanceof Customer) {
-          System.out.format(formatTabel, number, data.getId(), data.getName(), data.getAddress(), ((Customer)data).getMember().getMembershipName(), formatCurency(((Customer)data).getWallet()));
+          System.out.format(formatTabel, number, data.getId(), data.getName(), data.getAddress(), ((Customer)data).getMember().getMembershipName().equalsIgnoreCase("none") ? "-" : ((Customer)data).getMember().getMembershipName(), formatCurency(((Customer)data).getWallet()));
           number++;
         }
       }
