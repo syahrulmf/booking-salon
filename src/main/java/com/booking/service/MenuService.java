@@ -11,58 +11,75 @@ import com.booking.repositories.PersonRepository;
 import com.booking.repositories.ServiceRepository;
 
 public class MenuService {
-    private static List<Person> personList = PersonRepository.getAllPerson();
-    private static List<Service> serviceList = ServiceRepository.getAllService();
-    private static List<Reservation> reservationList = new ArrayList<>();
-    private static Scanner input = new Scanner(System.in);
+  public static List<Person> personList = PersonRepository.getAllPerson();
+  public static List<Service> serviceList = ServiceRepository.getAllService();
+  public static List<Reservation> reservationList = new ArrayList<>();
 
-    public static void mainMenu() {
-        String[] mainMenuArr = {"Show Data", "Create Reservation", "Complete/cancel reservation", "Exit"};
-        String[] subMenuArr = {"Recent Reservation", "Show Customer", "Show Available Employee", "Back to main menu"};
-    
-        int optionMainMenu;
-        int optionSubMenu;
+  public static void mainMenu() {
+    String[] mainMenuArr = {"Show Data", "Create Reservation", "Complete/cancel reservation", "Exit"};
+    boolean isLooping = true;
 
-		boolean backToMainMenu = false;
-        boolean backToSubMenu = false;
-        do {
-            PrintService.printMenu("Main Menu", mainMenuArr);
-            optionMainMenu = Integer.valueOf(input.nextLine());
-            switch (optionMainMenu) {
-                case 1:
-                    do {
-                        PrintService.printMenu("Show Data", subMenuArr);
-                        optionSubMenu = Integer.valueOf(input.nextLine());
-                        // Sub menu - menu 1
-                        switch (optionSubMenu) {
-                            case 1:
-                                // panggil fitur tampilkan recent reservation
-                                break;
-                            case 2:
-                                // panggil fitur tampilkan semua customer
-                                break;
-                            case 3:
-                                // panggil fitur tampilkan semua employee
-                                break;
-                            case 4:
-                                // panggil fitur tampilkan history reservation + total keuntungan
-                                break;
-                            case 0:
-                                backToSubMenu = false;
-                        }
-                    } while (!backToSubMenu);
-                    break;
-                case 2:
-                    // panggil fitur menambahkan reservation
-                    break;
-                case 3:
-                    // panggil fitur mengubah workstage menjadi finish/cancel
-                    break;
-                case 0:
-                    backToMainMenu = false;
-                    break;
-            }
-        } while (!backToMainMenu);
-		
-	}
+    do {
+      PrintService.printMenu("Main Menu", mainMenuArr);
+      int pilih = ValidationService.validateNumberWithRange("Pilih Menu: ", "Pilihan Tidak Dimengerti", ValidationService.regexNumber, 3, 0);
+
+      switch (pilih) {
+        case 1:
+          showDataMenu();
+          break;
+        case 2:
+          PrintService.showAllCustomer("List Data Customer", personList);
+          String customerID = ValidationService.validateInput("Silahkan Masukan Customer ID: ", "Input Tidak Dimengerti, Pastikan Customer ID valid!", ValidationService.regexID);
+          PrintService.showAllEmployee("List Data Employee", personList);
+          String employeeID = ValidationService.validateInput("Silahkan Masukan Employee ID: ", "Input Tidak Dimengerti, Pastikan Employee ID valid!", ValidationService.regexID);
+          PrintService.showAllServices("List Data Service", serviceList);
+
+          List<Service> services = new ArrayList<>();
+          boolean isService = true;
+
+          do {
+            String serviceID = ValidationService.validateInput("Silahkan Masukan Service ID: ", "Input Tidak Dimengerti, Pastikan Employee ID valid!", ValidationService.regexID);
+            services.add(ReservationService.getServiceByServiceId(serviceID));
+            isService = ValidationService.validateService("Ingin Pilih Service Yang Lain (Y/T)? ");
+          } while (isService);
+
+          ReservationService.createReservation(customerID, employeeID, services);
+
+          isLooping = ValidationService.validateMenu("Press 0 for Back To Main Menu: ");
+          break;
+        case 0:
+          isLooping = false;
+          break;
+      }
+    } while(isLooping);
+  }
+
+  public static void showDataMenu() {
+    String[] dataMenuArr = {"Recent Reservation", "Show Customer", "Show Available Employee", "History Reservation + Total Keuntungan", "Back to main menu"};
+    boolean isLooping = true;
+
+    do {
+      PrintService.printMenu("Data Booking Salon", dataMenuArr);
+      int pilih = ValidationService.validateNumberWithRange("Pilih Menu: ", "Pilihan Tidak Dimengerti", ValidationService.regexNumber, 4, 0);
+
+      switch (pilih) {
+        case 1:
+          PrintService.showRecentReservation("Recent Reservation", reservationList);
+          isLooping = ValidationService.validateMenu("Press 0 for Back To Main Menu: ");
+          break;
+        case 2:
+          PrintService.showAllCustomer( "List Data Customer", personList);
+          isLooping = ValidationService.validateMenu("Press 0 for Back To Main Menu: ");
+          break;
+        case 3:
+          PrintService.showAllEmployee("List Data Employee", personList);
+          isLooping = ValidationService.validateMenu("Press 0 for Back To Main Menu: ");
+          break;
+        case 0:
+          isLooping = false;
+          break;
+      }
+    } while(isLooping);
+  }
+
 }

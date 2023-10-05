@@ -27,11 +27,19 @@ public class Reservation {
         this.customer = customer;
         this.employee = employee;
         this.services = services;
-        this.reservationPrice = calculateReservationPrice();
+//        this.reservationPrice = calculateReservationPrice();
         this.workstage = workstage;
+
+        calculateReservationPrice();
     };
 
-    private double calculateReservationPrice(){
-        return 0;
+    private void calculateReservationPrice(){
+        double price = 0;
+
+        for (Service data : services) {
+            price += data.getPrice();
+        }
+
+        setReservationPrice(price);
     }
 }
