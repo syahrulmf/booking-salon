@@ -27,7 +27,6 @@ public class Reservation {
         this.customer = customer;
         this.employee = employee;
         this.services = services;
-//        this.reservationPrice = calculateReservationPrice();
         this.workstage = workstage;
 
         calculateReservationPrice();
@@ -38,6 +37,12 @@ public class Reservation {
 
         for (Service data : services) {
             price += data.getPrice();
+        }
+
+        if (customer.getMember().getMembershipName().equalsIgnoreCase("silver")) {
+            price = price - (price * 0.05);
+        } else if (customer.getMember().getMembershipName().equalsIgnoreCase("gold")) {
+            price = price - (price * 0.1);
         }
 
         setReservationPrice(price);
