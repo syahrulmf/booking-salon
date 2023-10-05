@@ -28,7 +28,7 @@ public class ReservationService {
       MenuService.reservationList.add(rev);
       // set new wallet customer
       dataCustomer.setWallet(dataCustomer.getWallet() - rev.getReservationPrice());
-
+      idNumber++;
       System.out.println("\nBooking Berhasil!!\n");
       System.out.println("Total Biaya Booking : Rp. " + PrintService.formatCurency(rev.getReservationPrice()));
     } else {
@@ -71,9 +71,45 @@ public class ReservationService {
     return dataService;
   }
 
-  public static void editReservationWorkstage(){
+  public static Reservation getReservationById(String reservationID) {
+    Reservation rev = new Reservation();
 
+    for (Reservation data : MenuService.reservationList) {
+      if (data.getReservationId().equalsIgnoreCase(reservationID)) {
+        rev = data;
+      }
+    }
+
+    return rev;
   }
 
-  // Silahkan tambahkan function lain, dan ubah function diatas sesuai kebutuhan
+  public static void editReservationWorkstage(String reservationID, String reservationType){
+    Reservation dataReservation = getReservationById(reservationID);
+    String result = "";
+
+    if (dataReservation.getReservationId() != null) {
+      Customer dataCustomer = getCustomerByCustomerId(dataReservation.getCustomer().getId());
+
+      if (reservationType.equalsIgnoreCase("Finish")) {
+        // mengubah workstage reservation ke finish
+        dataReservation.setWorkstage("Finish");
+        result = "Reservasi dengan ID " + reservationID + " Sudah Finish";
+
+      } else if (reservationType.equalsIgnoreCase("Cancel")) {
+        // mengubah workstage reservation ke cancel
+        dataReservation.setWorkstage("Cancel");
+        result = "Reservasi dengan ID " + reservationID + " Sudah Cancel";
+        // jika reservasi cancel, uang customer dikembalikan
+        dataCustomer.setWallet(dataCustomer.getWallet() + dataReservation.getReservationPrice());
+
+      } else {
+        result = "Reservasi Gagal diselesaikan, Pastikan data yang anda inputkan valid!";
+      }
+    } else {
+      result = "Reservasi Gagal diselesaikan, Pastikan data yang anda inputkan valid!";
+    }
+
+    System.out.println("\n" + result + "\n");
+  }
+
 }

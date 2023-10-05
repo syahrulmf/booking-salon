@@ -27,6 +27,7 @@ public class MenuService {
         case 1:
           showDataMenu();
           break;
+
         case 2:
           PrintService.showAllCustomer("List Data Customer", personList);
           String customerID = ValidationService.validateInput("Silahkan Masukan Customer ID: ", "Input Tidak Dimengerti, Pastikan Customer ID valid!", ValidationService.regexID);
@@ -45,6 +46,14 @@ public class MenuService {
 
           ReservationService.createReservation(customerID, employeeID, services);
 
+          isLooping = ValidationService.validateMenu("Press 0 for Back To Main Menu: ");
+          break;
+
+        case 3:
+          PrintService.showRecentReservation("Finis or Cancel Reservation Menu", reservationList);
+          String reservationID = ValidationService.validateInput("Silahkan Maukan Reservation ID: ", "Input tidak dimengerti!", ValidationService.regexID);
+          String reservationType = ValidationService.validateInput("Selesaikan Reservasi (Finish/Cancel): ", "Input tidak dimengerti", "^(?i)(Finish|Cancel)$");
+          ReservationService.editReservationWorkstage(reservationID, reservationType);
           isLooping = ValidationService.validateMenu("Press 0 for Back To Main Menu: ");
           break;
         case 0:
