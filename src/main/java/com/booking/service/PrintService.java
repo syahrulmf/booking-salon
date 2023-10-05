@@ -40,20 +40,20 @@ public class PrintService {
 
     public static void showRecentReservation(String title, List<Reservation> reservationList){
       int number = 1;
-      String formatTable = "| %-4s | %-10s | %-15s | %-28s | %-15s | %-12s | %-12s | %n";
-      System.out.println("======================================================================================================================");
-      System.out.format("| %-114s | %n", title);
-      System.out.println("======================================================================================================================");
+      String formatTable = "| %-4s | %-10s | %-15s | %-35s | %-15s | %-12s | %-12s | %n";
+      System.out.println("=============================================================================================================================");
+      System.out.format("| %-121s | %n", title);
+      System.out.println("=============================================================================================================================");
       System.out.printf(formatTable, "No", "ID", "Nama Customer", "Service", "Total Biaya", "Petugas", "Workstage");
-      System.out.println("======================================================================================================================");
+      System.out.println("=============================================================================================================================");
 
       for (Reservation reservation : reservationList) {
         if (reservation.getWorkstage().equalsIgnoreCase("Waiting") || reservation.getWorkstage().equalsIgnoreCase("In process")) {
-          System.out.printf(formatTable, number, reservation.getReservationId(), reservation.getCustomer().getName(), printServices(reservation.getServices()), reservation.getReservationPrice(), reservation.getEmployee().getName(), reservation.getWorkstage());
+          System.out.printf(formatTable, number, reservation.getReservationId(), reservation.getCustomer().getName(), printServices(reservation.getServices()), formatCurency(reservation.getReservationPrice()), reservation.getEmployee().getName(), reservation.getWorkstage());
           number++;
         }
       }
-      System.out.println("======================================================================================================================");
+      System.out.println("=============================================================================================================================");
     }
 
     public static void showAllCustomer(String title, List<Person> listData){

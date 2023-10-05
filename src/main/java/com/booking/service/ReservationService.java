@@ -30,7 +30,7 @@ public class ReservationService {
       dataCustomer.setWallet(dataCustomer.getWallet() - rev.getReservationPrice());
 
       System.out.println("\nBooking Berhasil!!\n");
-      System.out.println("Total Biaya Booking : Rp. " + rev.getReservationPrice());
+      System.out.println("Total Biaya Booking : Rp. " + PrintService.formatCurency(rev.getReservationPrice()));
     } else {
       System.out.println("\nBooking Gagal, Pastikan Input Sesuai dengan List yang Tersedia!!\n");
     }
