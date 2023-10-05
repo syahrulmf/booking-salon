@@ -75,6 +75,10 @@ public class MenuService {
           PrintService.showAllEmployee("List Data Employee", personList);
           isLooping = ValidationService.validateMenu("Press 0 for Back To Main Menu: ");
           break;
+        case 4:
+          PrintService.showHistoryReservation("History Reservation", reservationList);
+          isLooping = ValidationService.validateMenu("Press 0 for Back To Main Menu: ");
+          break;
         case 0:
           isLooping = false;
           break;

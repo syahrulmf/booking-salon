@@ -114,8 +114,27 @@ public class PrintService {
       System.out.println("==========================================================");
     }
 
-    public void showHistoryReservation(){
+    public static void showHistoryReservation(String title, List<Reservation> reservationList){
+      int number = 1;
+      String formatTable = "| %-4s | %-10s | %-15s | %-35s | %-15s | %-12s | %-12s | %n";
+      System.out.println("=============================================================================================================================");
+      System.out.format("| %-121s | %n", title);
+      System.out.println("=============================================================================================================================");
+      System.out.printf(formatTable, "No", "ID", "Nama Customer", "Service", "Total Biaya", "Petugas", "Workstage");
+      System.out.println("=============================================================================================================================");
 
+      double totalKeuntungan = 0;
+      for (Reservation reservation : reservationList) {
+        System.out.printf(formatTable, number, reservation.getReservationId(), reservation.getCustomer().getName(), printServices(reservation.getServices()), formatCurency(reservation.getReservationPrice()), reservation.getEmployee().getName(), reservation.getWorkstage());
+        number++;
+
+        if (reservation.getWorkstage().equalsIgnoreCase("Finish")) {
+          totalKeuntungan += reservation.getReservationPrice();
+        }
+      }
+      System.out.println("=============================================================================================================================");
+      System.out.format("| %-73s | %-45s | %n", "Total Keuntungan", "Rp. " + (totalKeuntungan != 0 ? formatCurency(totalKeuntungan) : 0));
+      System.out.println("=============================================================================================================================");
     }
 
     public static String formatCurency(double currency) {
