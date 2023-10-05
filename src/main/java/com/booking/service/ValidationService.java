@@ -124,7 +124,11 @@ public class ValidationService {
       input = validateInput(question, errorMessage, regex);
       Reservation dataReservation = ReservationService.getReservationById(input);
       if (dataReservation.getReservationId() != null) {
-        isLooping = false;
+        if (!dataReservation.getWorkstage().equalsIgnoreCase("In Process")) {
+          System.out.println("Reservation yang dicari sudah selesai");
+        } else {
+          isLooping = false;
+        }
       } else {
         System.out.println(errorMessage);
       }
