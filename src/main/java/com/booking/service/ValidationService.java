@@ -152,7 +152,7 @@ public class ValidationService {
     boolean isLooping = false;
 
     if (services.size() != MenuService.serviceList.size()) {
-      String pilihan = validateInput(question, "Input Tidak Dimengerti, Pastikan Employee ID valid!", regexHuruf);
+      String pilihan = validateInput(question, "Hanya menerima input Y/T!", regexHuruf);
 
       if (pilihan.equalsIgnoreCase("Y")) {
         isLooping = true;
